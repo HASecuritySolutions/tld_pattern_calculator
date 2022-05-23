@@ -58,6 +58,7 @@ foreach($record in $grtld){
     $grtld_regex += "$record|"
 }
 $grtld_regex.Substring(0,$grtld_regex.Length-1) | Out-File $pattern_file -Append -Encoding ascii
-'TOPLEVEL (%{GTLD:[dns][question][gtld]}|%{GRTLD:[dns][question][grtld]}|%{STTLD:[dns][question][sttld]})(\.%{CCTLD:[dns][question][cctld]})?$' | Out-File $pattern_file -Append -Encoding ascii
+'LOCALTLD int|local|test|example|invalid|localhost' | Out-File $pattern_file -Append -Encoding ascii
+'TOPLEVEL (%{GTLD:[dns][question][gtld]}|%{GRTLD:[dns][question][grtld]}|%{STTLD:[dns][question][sttld]}|%{LOCALTLD:[dns][question][localtld]}|%{CCTLD:[dns][question][cctld]}{1-2})$' | Out-File $pattern_file -Append -Encoding ascii
 'REGISTEREDDOMAIN %{WORD:[dns][question][parent_domain]}\.%{TOPLEVEL:[dns][question][top_level_domain]}' | Out-File $pattern_file -Append -Encoding ascii
 'DNSQUERY (%{DATA:[dns][question][subdomain]}\.)?%{REGISTEREDDOMAIN:[dns][question][registered_domain]}' | Out-File $pattern_file -Append -Encoding ascii
