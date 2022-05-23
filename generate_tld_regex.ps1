@@ -1,5 +1,5 @@
 ﻿# Set $path to the folder you want the tld_patterns.txt file to generate in
-$path = "C:\Users\jhenderson\Dropbox\SEC555\scripts"
+$path = "C:\Users\jhend\Downloads\tld_pattern_calculator-master\tld_pattern_calculator-master"
 # Set this to the site that contains the list of tlds
 # If you change the site you may need to rename fields
 $site = "https://tld-list.com/df/tld-list-details.csv"
