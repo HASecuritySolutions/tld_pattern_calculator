@@ -12,12 +12,6 @@ This command runs the **generate_tld_regex.ps1** script which attempts to pull d
 powershell.exe -File C:\users\user\Downloads\tld_pattern_calculator\generate_tld_regex.ps1 -ExecutionPolicy Bypass
 ```
 
-This command runs the **generate_tld_regex_from_files.ps1** script which attempts to read text files containing TLDs and then builds a regex pattern file in a file called **tld_patterns.txt**. You must have the TLD files saved before this will work. This GitHub repo comes with TLD files although they are not updated.
-
-```bash
-powershell.exe -File C:\users\user\Downloads\tld_pattern_calculator\generate_tld_regex_from_files.ps1 -ExecutionPolicy Bypass
-```
-
 Either script generates a file called **tld_patterns.txt** that should have built out a regex pattern file that looks like this:
 
 ```yaml
@@ -25,5 +19,7 @@ GTLD aaa|aarp|abarth|abb|abbott|abbvie|abc|able|abogado|abudhabi|academy|accentu
 CCTLD ac|ad|ae|af|ag|ai|al|am|an|ao|aq|ar|as|at|au|aw|ax|az|ba|bb|bd|be|bf|bg|bh|bi|bj|bl|bm|bn|bo|bq|br|bs|bt|bv|bw|by|bz|ca|cc|cd|cf|cg|ch|ci|ck|cl|cm|cn|co|cr|cu|cv|cw|cx|cy|cz|de|dj|dk|dm|do|dz|ec|ee|eg|eh|er|es|et|eu|fi|fj|fk|fm|fo|fr|ga|gb|gd|ge|gf|gg|gh|gi|gl|gm|gn|gp|gq|gr|gs|gt|gu|gw|gy|hk|hm|hn|hr|ht|hu|id|ie|il|im|in|io|iq|ir|is|it|je|jm|jo|jp|ke|kg|kh|ki|km|kn|kp|kr|kw|ky|kz|la|lb|lc|li|lk|lr|ls|lt|lu|lv|ly|ma|mc|md|me|mf|mg|mh|mk|ml|mm|mn|mo|mp|mq|mr|ms|mt|mu|mv|mw|mx|my|mz|na|nc|ne|nf|ng|ni|nl|no|np|nr|nu|nz|om|pa|pe|pf|pg|ph|pk|pl|pm|pn|pr|ps|pt|pw|py|qa|re|ro|rs|ru|rw|sa|sb|sc|sd|se|sg|sh|si|sj|sk|sl|sm|sn|so|sr|ss|st|su|sv|sx|sy|sz|tc|td|tf|tg|th|tj|tk|tl|tm|tn|to|tp|tr|tt|tv|tw|tz|ua|ug|uk|um|us|uy|uz|va|vc|ve|vg|vi|vn|vu|wf|ws|ye|yt|za|zm|zw
 STLD aero|asia|cat|coop|edu|gov|int|jobs|mil|museum|post|tel|travel|xxx
 GRTLD biz|name|pro
-REGISTEREDDOMAIN %{WORD:parent_domain}\.(%{GTLD:gtld}|%{GRTLD:grtld}|%{STLD:stld})(\.%{CCTLD:cctld})?$
+TOPLEVEL (%{GTLD:[dns][question][gtld]}|%{GRTLD:[dns][question][grtld]}|%{STTLD:[dns][question][sttld]})(\.%{CCTLD:[dns][question][cctld]})?$
+REGISTEREDDOMAIN %{WORD:[dns][question][parent_domain]}\.%{TOPLEVEL:[dns][question][top_level_domain]}
+DNSQUERY (%{DATA:[dns][question][subdomain]}\.)?%{REGISTEREDDOMAIN:[dns][question][registered_domain]}
 ```
